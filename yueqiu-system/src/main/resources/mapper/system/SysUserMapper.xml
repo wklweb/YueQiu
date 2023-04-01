@@ -97,6 +97,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where user_id = #{userId}
 	</update>
-
+	<insert id="insertUser" parameterType="SysUser">
+		insert into sys_user(
+		    <if test="userId!=null and userId!=''">user_id,</if>
+			<if test="userName!=null and userName!=''">user_name,</if>
+		    <if test="nickName!=null and nickName!=''">nick_name,</if>
+			<if test="userType!=null and userType!=''">user_type,</if>
+		    <if test="email!=null and email!=''">email,</if>
+		    <if test="phonenumber!=null and phonenumber!=''">phonenumber,</if>
+		    <if test="sex!=null and sex!=''">sex,</if>
+		    <if test="avatar!=null and avatar!=''">avatar,</if>
+		    <if test="password!=null and password!=''">password,</if>
+		    <if test="status!=null and status!=''">status,</if>
+			<if test="delFlag!=null and delFlag!=''">def_flag,</if>
+			<if test="createBy!=null and createBy!=''">create_by,</if>
+		     create_time
+		)
+		values(
+			<if test="userId!=null and userId!=''">#{userId},</if>
+			<if test="userName!=null and userName!=''">#{userName},</if>
+			<if test="nickName!=null and nickName!=''">#{nickName},</if>
+			<if test="userType!=null and userType!=''">#{userType},</if>
+			<if test="email!=null and email!=''">#{email},</if>
+			<if test="phonenumber!=null and phonenumber!=''">#{phonenumber},</if>
+			<if test="sex!=null and sex!=''">#{sex},</if>
+			<if test="avatar!=null and avatar!=''">#{avatar},</if>
+			<if test="password!=null and password!=''">#{password},</if>
+			<if test="status!=null and status!=''">#{status},</if>
+			<if test="delFlag!=null and delFlag!=''">#{delFlag},</if>
+			<if test="createBy!=null and createBy!=''">#{createBy},</if>
+			sysdate()
+		)
+	</insert>
 	
 </mapper> 

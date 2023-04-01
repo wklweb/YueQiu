@@ -13,15 +13,13 @@ import java.util.Date;
 import java.util.List;
 
 public class SysUser extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */
     @Excel(name = "用户序号", cellType = Excel.ColumnType.NUMERIC, prompt = "用户编号")
     private Long userId;
 
-    /** 部门ID */
-    @Excel(name = "部门编号", type = Excel.Type.IMPORT)
-    private Long deptId;
 
     /** 用户账号 */
     @Excel(name = "登录名称")
@@ -30,6 +28,10 @@ public class SysUser extends BaseEntity {
     /** 用户昵称 */
     @Excel(name = "用户名称")
     private String nickName;
+
+    /** 用户类型 */
+    @Excel(name = "用户类型")
+    private String userType;
 
     /** 用户邮箱 */
     @Excel(name = "用户邮箱")
@@ -77,9 +79,18 @@ public class SysUser extends BaseEntity {
     /** 角色ID */
     private Long roleId;
 
+
     public SysUser()
     {
 
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public SysUser(Long userId)
@@ -105,16 +116,6 @@ public class SysUser extends BaseEntity {
     public static boolean isAdmin(Long userId)
     {
         return userId != null && 1L == userId;
-    }
-
-    public Long getDeptId()
-    {
-        return deptId;
-    }
-
-    public void setDeptId(Long deptId)
-    {
-        this.deptId = deptId;
     }
 
     @Xss(message = "用户昵称不能包含脚本字符")
@@ -281,7 +282,6 @@ public class SysUser extends BaseEntity {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("userId", getUserId())
-                .append("deptId", getDeptId())
                 .append("userName", getUserName())
                 .append("nickName", getNickName())
                 .append("email", getEmail())

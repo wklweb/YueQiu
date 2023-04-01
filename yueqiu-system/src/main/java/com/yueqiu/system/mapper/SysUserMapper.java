@@ -12,4 +12,6 @@ public interface SysUserMapper {
     SysUser selectUserByUserName(String loginName);
 
     List<SysUser> selectUserList(SysUser sysUser);
+
+    int insertUser(SysUser user);
 }
