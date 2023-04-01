@@ -1,0 +1,58 @@
+yueqiu:
+  name: yueqiu
+  version: 4.7.6
+  copyrightYear: 2023
+  demoEnabled: false
+  profile: D:/yueqiu/uploadPath
+  addressEnabled: true
+  captchaType: number
+
+
+spring:
+  profiles:
+    active: druid
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+
+  redis:
+    port: 6379
+    host: 127.0.0.1
+    password:
+    database: 2
+    # 连接超时时间
+    timeout: 10s
+  session:
+    store-type: redis
+server:
+  port: 8080
+
+
+# token配置
+token:
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌密钥
+  secret: abcdefghijklmnopqrstuvwxyz
+  # 令牌有效期（默认30分钟）
+  expireTime: 30
+
+
+
+mybatis:
+  #  多个package路径用 ',' 隔开
+  type-aliases-package: com.yueqiu.**.domain
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+
+# 用户配置
+user:
+  password:
+    # 密码最大错误次数
+    maxRetryCount: 5
+    # 密码锁定时间（默认10分钟）
+    lockTime: 10
+
+
+swagger:
+  isSwaggerEnabled: true

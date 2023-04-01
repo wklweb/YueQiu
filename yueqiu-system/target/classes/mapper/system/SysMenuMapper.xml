@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yueqiu.system.mapper.SysMenuMapper">
+    <resultMap type="SysMenu" id="SysMenuResult">
+        <id     property="menuId"         column="menu_id"        />
+        <result property="menuName"       column="menu_name"      />
+        <result property="parentName"     column="parent_name"    />
+        <result property="parentId"       column="parent_id"      />
+        <result property="orderNum"       column="order_num"      />
+        <result property="url"            column="url"            />
+        <result property="target"         column="target"         />
+        <result property="menuType"       column="menu_type"      />
+        <result property="visible"        column="visible"        />
+        <result property="isRefresh"      column="is_refresh"     />
+        <result property="perms"          column="perms"          />
+        <result property="icon"           column="icon"           />
+        <result property="createBy"       column="create_by"      />
+        <result property="createTime"     column="create_time"    />
+        <result property="updateTime"     column="update_time"    />
+        <result property="updateBy"       column="update_by"      />
+        <result property="remark"         column="remark"         />
+    </resultMap>
+    <sql id="selectSysMenuVo">
+        select menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, ifnull(perms,'') as perms, icon, create_by, create_time
+        from sys_menu
+    </sql>
+    <select id="selectPermissionsByRoleId" resultMap="SysMenuResult" parameterType="Long">
+        select distinct m.perms
+        from sys_menu m
+                 left join sys_role_menu rm on rm.menu_id = m.menu_id
+        where m.visible = '0' and rm.role_id = #{roleId}
+    </select>
+</mapper>
