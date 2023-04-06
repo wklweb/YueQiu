@@ -30,6 +30,14 @@ public class ISysConfigServiceImpl implements ISysConfigService {
     public String selectConfigByKey(String key) {
         String configValue = Convert.toStr(redisCache.getCacheObject(getConfigKey(key)));
         if(StringUtils.isNotNull(configValue)){
+            //更新缓存
+            SysConfig sysConfig = new SysConfig();
+            sysConfig.setConfigKey(key);
+            SysConfig newConfig = configMapper.selectConfig(sysConfig);
+            if(!configValue.equals(newConfig.getConfigValue())){
+                redisCache.setCacheObject(getConfigKey(key),newConfig.getConfigValue());
+                return newConfig.getConfigValue();
+            }
             return configValue;
         }
         SysConfig sysConfig = new SysConfig();

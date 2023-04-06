@@ -2,13 +2,16 @@ package com.yueqiu.framework.manager;
 
 import com.yueqiu.common.constant.Constants;
 import com.yueqiu.common.core.domain.model.LoginUser;
+import com.yueqiu.common.domain.entity.SysOperLog;
 import com.yueqiu.common.utils.*;
 import com.yueqiu.common.utils.log.LogUtils;
 import com.yueqiu.system.domain.SysLogininfor;
 import com.yueqiu.system.service.ISysLogininforService;
+import com.yueqiu.system.service.SysOperLogService;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Objects;
 import java.util.TimerTask;
@@ -62,4 +65,12 @@ public class AsyncFactory {
 
     }
 
+    public static TimerTask recordOperLog(SysOperLog sysOperLog) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                SpringUtils.getBean(SysOperLogService.class).recordOperLog(sysOperLog);
+            }
+        };
+    }
 }

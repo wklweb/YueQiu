@@ -65,4 +65,15 @@ public class SysUserServiceImpl implements SysUserService {
         int result = sysUserMapper.insertUser(user);
         return result;
     }
+
+    /**
+     * 更新用户头像
+     * @param username
+     * @param imgUrl
+     * @return
+     */
+    @Override
+    public boolean updateUserAvatar(String username, String imgUrl) {
+        return sysUserMapper.updateUserAvatar(username,imgUrl)>0;
+    }
 }

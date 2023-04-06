@@ -13,6 +13,7 @@ public class MimeTypeUtils {
     public static final String IMAGE_BMP = "image/bmp";
 
     public static final String IMAGE_GIF = "image/gif";
+    public static final String[] IMAGE_EXTENSION = { "bmp", "gif", "jpg", "jpeg", "png" };
     public static final String[] DEFAULT_ALLOW_Type=  {
             // 图片
             "bmp", "gif", "jpg", "jpeg", "png",

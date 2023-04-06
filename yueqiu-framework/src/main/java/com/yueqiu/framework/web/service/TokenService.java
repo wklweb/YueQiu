@@ -149,4 +149,30 @@ public class TokenService {
                 .compact();
         return token;
     }
+
+    /**
+     * 刷新当前登录用户信息
+     * @param loginUser
+     */
+    public void setLoginUser(LoginUser loginUser) {
+       if(StringUtils.isNotNull(loginUser)&&StringUtils.isNotEmpty(loginUser.getToken())){
+           refreshToken(loginUser);
+       }
+    }
+
+    public String getUserName(String key) {
+        if (StringUtils.isNotEmpty(key)) {
+            try {
+                Claims claims = parseToken(key);
+                String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
+                String tokenKey = getTokenKey(uuid);
+                LoginUser loginUser = redisCache.getCacheObject(tokenKey);
+                refreshToken(loginUser);
+                return loginUser.getUsername();
+            } catch (Exception e) {
+
+            }
+        }
+        return null;
+    }
 }

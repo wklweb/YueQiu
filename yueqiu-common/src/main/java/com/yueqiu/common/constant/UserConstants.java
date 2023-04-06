@@ -17,4 +17,6 @@ public class UserConstants {
     public static final String PHONE_UNIQUE = "0";
     public static final String EMAIL_NOT_UNIQUE = "1";
     public static final String EMAIL_UNIQUE = "0";
+    public static final boolean NOT_UNIQUE = false;
+    public static final boolean UNIQUE = true;
 }

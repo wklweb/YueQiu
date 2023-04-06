@@ -8,6 +8,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServletUtils {
     public static HttpServletRequest getRequest()
@@ -42,5 +44,11 @@ public class ServletUtils {
 
     public static HttpServletResponse getResponse() {
         return getRequestAttributes().getResponse();
+    }
+
+    public static Map<String, String[]> getParamMap(HttpServletRequest request) {
+        Map<String,String[]> map = new HashMap<>();
+        map =  request.getParameterMap();
+        return map;
     }
 }

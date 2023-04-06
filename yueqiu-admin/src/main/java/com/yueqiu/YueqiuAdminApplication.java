@@ -1,5 +1,6 @@
 package com.yueqiu;
 
+import com.yueqiu.framework.web.service.WebSocketServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;

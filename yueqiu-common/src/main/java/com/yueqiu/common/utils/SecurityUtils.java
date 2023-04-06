@@ -34,4 +34,14 @@ public class SecurityUtils {
             throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
         }
     }
+
+    /**
+     * 加密密码
+     * @param password
+     * @return
+     */
+    public static String encryptPassword(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
+    }
 }

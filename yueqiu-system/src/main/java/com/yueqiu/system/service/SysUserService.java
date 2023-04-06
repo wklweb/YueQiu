@@ -19,4 +19,6 @@ public interface SysUserService {
     String checkEmail(SysUser user);
 
     int addSysUser(SysUser user);
+
+    boolean updateUserAvatar(String username, String imgUrl);
 }

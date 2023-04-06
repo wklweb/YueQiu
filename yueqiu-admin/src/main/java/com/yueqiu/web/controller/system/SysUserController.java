@@ -1,23 +1,23 @@
 package com.yueqiu.web.controller.system;
 
 import com.yueqiu.common.annotation.Anonymous;
+import com.yueqiu.common.annotation.Log;
 import com.yueqiu.common.constant.UserConstants;
 import com.yueqiu.common.domain.AjaxResult;
 import com.yueqiu.common.domain.entity.SysUser;
 import com.yueqiu.common.domain.entity.TableInfo;
+import com.yueqiu.common.enums.BusinessType;
+import com.yueqiu.common.enums.OperatorType;
+import com.yueqiu.common.utils.SecurityUtils;
 import com.yueqiu.common.utils.StringUtils;
-import com.yueqiu.common.utils.page.PageUtils;
+import com.yueqiu.system.service.SysUserRoleService;
 import com.yueqiu.system.service.SysUserService;
 import com.yueqiu.web.controller.base.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,15 +28,21 @@ public class SysUserController extends BaseController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
+
     @GetMapping("/list")
+    @PreAuthorize("@permission.hasPerms('system:user:list')")
     @ApiOperation(value = "查询用户信息", notes = "查询用户信息的全部信息")
     public TableInfo users(@RequestBody SysUser sysUser){
         startPage();
         List<SysUser> list = sysUserService.selectUserByUser(sysUser);
         return getTableInfo(list);
+
     }
     @PostMapping("/add")
     @PreAuthorize("@permission.hasPerms('system:user:add')")
+    @Log(title = "新增用户",BusinessType = BusinessType.INSERT,operatorType = OperatorType.MANAGE)
     @ApiOperation(value = "新增用户", notes = "新增用户")
     public AjaxResult add(@RequestBody SysUser user){
         if(UserConstants.USERNAME_NOT_UNIQUE.equals(sysUserService.checkUserName(user))){
@@ -48,6 +54,8 @@ public class SysUserController extends BaseController {
         if(UserConstants.EMAIL_NOT_UNIQUE.equals(sysUserService.checkEmail(user))){
             return AjaxResult.error("邮箱:"+user.getEmail()+"已存在");
         }
+        user.setCreateBy(getUserName());
+        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         int result = sysUserService.addSysUser(user);
         if(result==1){
             return AjaxResult.success("新增成功");
@@ -112,8 +120,5 @@ public class SysUserController extends BaseController {
         return AjaxResult.success();
     }
 
-    private void startPage() {
-        PageUtils.startPage();
-    }
 
 }

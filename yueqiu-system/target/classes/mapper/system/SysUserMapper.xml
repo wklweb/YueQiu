@@ -129,5 +129,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			sysdate()
 		)
 	</insert>
+	<update id="updateUserAvatar" parameterType="SysUser">
+		update sys_user set avatar = #{avatar} where user_name = #{userName}
+	</update>
 	
 </mapper> 

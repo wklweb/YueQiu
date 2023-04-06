@@ -1,8 +1,10 @@
 package com.yueqiu.common.utils;
 
+import com.yueqiu.common.filter.RepeatRequestWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,7 +12,11 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 
+/**
+ * http工具类
+ */
 public class HttpUtils {
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
     public static String sendGet(String ipUrl, String s, String gbk) {
@@ -63,5 +69,22 @@ public class HttpUtils {
         }
         return stringBuilder.toString();
 
+    }
+
+    public static String getBodyString(HttpServletRequest request) {
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new InputStreamReader(request.getInputStream(), StandardCharsets.UTF_8));
+            String n = "";
+            while ((n=bufferedReader.readLine())!=null){
+                stringBuilder.append(n);
+            }
+            return stringBuilder.toString();
+        }
+        catch (Exception e){
+            log.error(e.getMessage());
+            return null;
+        }
     }
 }

@@ -32,7 +32,7 @@ public class FileUploadUtils {
         }
     }
 
-    private static String fileUpload(String uploadPath, MultipartFile multipartFile, String[] default_allow_type) throws InvalidExtension, IOException {
+    public static String fileUpload(String uploadPath, MultipartFile multipartFile, String[] default_allow_type) throws InvalidExtension, IOException {
         int fileNameLength = Objects.requireNonNull(multipartFile.getOriginalFilename()).length();
         //文件名限制
         if(fileNameLength>FileUploadUtils.MAX_FILENAME_LENGTH){

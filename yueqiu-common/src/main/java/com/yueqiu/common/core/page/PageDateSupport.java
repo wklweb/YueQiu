@@ -29,7 +29,7 @@ public class PageDateSupport {
       PageData pageData = new PageData();
       pageData.setPageNum(pageNum);
       pageData.setPageSize(pageSize);
-      pageData.setIsASC(isASC);
+      pageData.setIsASC(isASC==null?"asc":isASC);
       pageData.setOrderBy(orderByColumn);
       pageData.setReasonable(ServletUtils.getParameterToBool(REASONABLE));
       return pageData;

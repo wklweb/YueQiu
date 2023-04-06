@@ -18,6 +18,7 @@ public class Constants {
      */
     public static final String LOGIN_FAIL = "Error";
     public static final String RESOURCE_PREFIX = "/profile";
+    public static final String UTF = "UTF-8";
 
     public static String Token = "token";
 }

@@ -1,6 +1,7 @@
 package com.yueqiu.common.utils;
 import com.yueqiu.common.core.text.StrFormatter;
 
+import java.util.Map;
 import java.util.Set;
 
 public class StringUtils extends org.apache.commons.lang3.StringUtils{
@@ -89,5 +90,14 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils{
 
         }
         return stringBuilder.toString();
+    }
+
+    public static boolean isEmpty(Map<?,?> params) {
+        return isNull(params)|| params.isEmpty();
+    }
+
+    public static boolean isNotEmpty(Object[] objects)
+    {
+        return !isEmpty(objects);
     }
 }

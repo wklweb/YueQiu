@@ -2,19 +2,25 @@ package com.yueqiu.framework.config.properties;
 
 import com.yueqiu.common.config.YueQiuConfig;
 import com.yueqiu.common.constant.Constants;
+import com.yueqiu.framework.interceptor.ResubmitInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class ResourceConfig implements WebMvcConfigurer {
+    @Autowired
+    private ResubmitInterceptor resubmitInterceptor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry)
@@ -27,6 +33,15 @@ public class ResourceConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/swagger-ui/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
                 .setCacheControl(CacheControl.maxAge(5, TimeUnit.HOURS).cachePublic());;
+    }
+
+    /**
+     * 注册一个自定义拦截器到程序列表中
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+       registry.addInterceptor(resubmitInterceptor).addPathPatterns("/**");
     }
 
 

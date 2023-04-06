@@ -37,8 +37,30 @@ public class SysRole extends BaseEntity {
      */
     public Set<String> permissions;
 
+    /** 菜单树选择项是否关联显示（ 0：父子不互相关联显示 1：父子互相关联显示） */
+    private boolean menuCheckStrictly;
+
+    /** 部门树选择项是否关联显示（0：父子不互相关联显示 1：父子互相关联显示 ） */
+    private boolean deptCheckStrictly;
+
     public SysRole(){
 
+    }
+
+    public boolean isMenuCheckStrictly() {
+        return menuCheckStrictly;
+    }
+
+    public void setMenuCheckStrictly(boolean menuCheckStrictly) {
+        this.menuCheckStrictly = menuCheckStrictly;
+    }
+
+    public boolean isDeptCheckStrictly() {
+        return deptCheckStrictly;
+    }
+
+    public void setDeptCheckStrictly(boolean deptCheckStrictly) {
+        this.deptCheckStrictly = deptCheckStrictly;
     }
 
     public Long getRoleId() {

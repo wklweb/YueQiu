@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 //过滤请求
                 .authorizeRequests()
-                .antMatchers("/login", "/register", "/captchaImage").permitAll()
+                .antMatchers("/login", "/register", "/captchaImage","/ws/**","/websocket/**").permitAll()
                  // 静态资源，可匿名访问
                 .antMatchers(HttpMethod.GET, "/", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/profile/**").permitAll()
                 .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
@@ -96,7 +96,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 添加CORS filter
         httpSecurity.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
         httpSecurity.addFilterBefore(corsFilter, LogoutFilter.class);
-
 
 
 
