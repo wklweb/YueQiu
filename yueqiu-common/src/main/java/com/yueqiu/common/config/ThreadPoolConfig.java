@@ -38,7 +38,7 @@ public class ThreadPoolConfig {
         executor.setMaxPoolSize(100);
         executor.setQueueCapacity(1000);
         //线程的名称前缀
-        executor.setThreadNamePrefix("chat-pool-%d");
+        executor.setThreadNamePrefix("joinActivity-pool");
         //线程活跃时间（秒）
 //        executor.setKeepAliveSeconds(60);
         //等待所有任务结束后再关闭线程池

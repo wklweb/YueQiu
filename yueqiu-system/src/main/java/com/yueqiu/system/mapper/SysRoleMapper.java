@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface SysRoleMapper {
-    Set<String> selectRolesByUserId(Long userId);
+    List<SysRole> selectRolesByUserId(Long userId);
 
     List<SysRole> selectRoleList(SysRole role);
 

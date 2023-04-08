@@ -47,6 +47,7 @@ public class SysRole extends BaseEntity {
 
     }
 
+
     public boolean isMenuCheckStrictly() {
         return menuCheckStrictly;
     }

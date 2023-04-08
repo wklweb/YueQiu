@@ -25,7 +25,7 @@ public class SysMenu extends BaseEntity {
     private String orderNum;
 
     /** 菜单URL */
-    private String url;
+    private String path;
 
     /** 打开方式（menuItem页签 menuBlank新窗口） */
     private String target;
@@ -44,9 +44,21 @@ public class SysMenu extends BaseEntity {
 
     /** 菜单图标 */
     private String icon;
+    private String status;
+
+
 
     /** 子菜单 */
     private List<SysMenu> children = new ArrayList<SysMenu>();
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Long getMenuId()
     {
@@ -101,15 +113,15 @@ public class SysMenu extends BaseEntity {
         this.orderNum = orderNum;
     }
 
+
+
     @Size(min = 0, max = 200, message = "请求地址不能超过200个字符")
-    public String getUrl()
-    {
-        return url;
+    public String getPath() {
+        return path;
     }
 
-    public void setUrl(String url)
-    {
-        this.url = url;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getTarget()
@@ -191,7 +203,7 @@ public class SysMenu extends BaseEntity {
                 .append("menuName", getMenuName())
                 .append("parentId", getParentId())
                 .append("orderNum", getOrderNum())
-                .append("url", getUrl())
+                .append("path", getPath())
                 .append("target", getTarget())
                 .append("menuType", getMenuType())
                 .append("visible", getVisible())

@@ -4,6 +4,7 @@ import com.yueqiu.common.domain.entity.SysRole;
 import com.yueqiu.common.domain.entity.SysUser;
 import com.yueqiu.common.utils.StringUtils;
 import com.yueqiu.system.service.SysMenuService;
+import com.yueqiu.system.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,8 @@ public class SysPermissionService {
 
     @Autowired
     private SysMenuService menuService;
+    @Autowired
+    private SysRoleService sysRoleService;
     public Set<String> getPermissions(SysUser sysUser) {
         Set<String> set = new HashSet<>();
         if(sysUser.isAdmin()){
@@ -29,8 +32,23 @@ public class SysPermissionService {
                     set.addAll(perms);
                 }
             }
+            else
+            {
+                set.addAll(menuService.selectMenuPermsByUserId(sysUser.getUserId()));
+            }
         }
         return set;
 
+    }
+
+    public Set<String> getRoles(SysUser sysUser) {
+        Set<String> set = new HashSet<>();
+        if(sysUser.isAdmin()){
+            set.add("admin");
+        }
+        else {
+           set.addAll(sysRoleService.selectRolesByUserId(sysUser.getUserId()));
+        }
+        return set;
     }
 }

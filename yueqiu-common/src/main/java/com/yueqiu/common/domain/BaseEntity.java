@@ -40,6 +40,7 @@ public class BaseEntity implements Serializable {
         return this.params;
     }
 
+
     public void setParams(Map<String, Object> params) {
         this.params = params;
     }
