@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yueqiu.system.mapper.SysActivityMapper">
+    <resultMap type="SysActivity" id="SysActivityResult">
+        <id property="activityId" column="activity_id"/>
+        <result property="title" column="title"/>
+        <result property="activityType" column="activity_type"/>
+        <result property="needPeople" column="need_people"/>
+        <result property="text" column="text"/>
+        <result property="participant" column="participant"/>
+        <result property="password" column="password"/>
+        <result property="imgUrl" column="img_url"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+	<sql id="selectActivityVO">
+		select a.activity_id,a.title,a.activity_type,a.need_people,a.text,a.participant,a.img_url,a.status,a.create_by,a.create_time,a.update_by,a.update_time,a.remark,a.password
+		from sys_activity a
+	</sql>
+	<select id="selectActivityById" resultMap="SysActivityResult" parameterType="Long">
+		<include refid="selectActivityVO" />
+		where a.activity_id = #{activityId}
+	</select>
+
+	<insert id="insertActivity" parameterType="SysActivity">
+		insert into sys_activity(title,activity_type,need_people,text,participant,password,img_url,create_by,create_time)
+		values (#{title},#{activityType},#{needPeople},#{text},#{participant},#{password},#{imgUrl},#{createBy},sysdate())
+	</insert>
+</mapper>

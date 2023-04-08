@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yueqiu.system.mapper.SysFormMapper">
+    <resultMap type="SysForm" id="SysFormResult">
+        <id property="formId" column="form_id"/>
+        <result property="applicant" column="applicant"/>
+        <result property="applicationType" column="application_type"/>
+        <result property="reason" column="reason"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="shopName" column="shop_name"/>
+        <result property="phonenumber" column="phonenumber"/>
+        <result property="reviewer" column="reviewer"/>
+        <result property="description" column="description"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectFormVO">
+        select f.form_id,f.applicant,f.application_type,f.reason,f.status,f.shop_name,f.phonenumber,f.reviewer,f.description,f.create_by,f.create_time,f.update_by,f.update_time,f.remark
+        from sys_form f
+        left join sys_user_form uf on uf.username=f.applicant
+        left join sys_user on u.username = uf.username
+    </sql>
+
+    <select id="selectFormList" resultMap="SysFormResult" parameterType="SysForm">
+        select f.form_id,f.applicant,f.application_type,f.reason,f.status,<if test="shopName!=null and shopName!=''">f.shop_name,</if>f.phonenumber,f.del_flag,f.reviewer,f.description,f.create_time,f.update_by,f.update_time,f.remark
+        from sys_form f
+        where f.del_flag = '0'
+        <if test="formId!=null and formId!=''">
+            AND f.form_id = #{formId}
+        </if>
+        <if test="applicant!=null and applicant!=''">
+            AND f.applicant = #{applicant}
+        </if>
+        <if test="applicationType!=null and applicationType!=''">
+            AND f.application_type = #{applicationType}
+        </if>
+        <if test="reason!=null and reason!=''">
+            AND f.reason = #{reason}
+        </if>
+        <if test="status!=null and status!=''">
+            AND f.status = #{status}
+        </if>
+        <if test="delFlag!=null and delFlag!=''">
+            AND f.del_flag = #{delFlag}
+        </if>
+        <if test="shopName!=null and shopName!=''">
+            AND f.shop_name = #{shopName}
+        </if>
+        <if test="phonenumber!=null and phonenumber!=''">
+            AND f.phonenumber = #{phonenumber}
+        </if>
+        <if test="reviewer!=null and reviewer!=''">
+            AND f.reviewer = #{reviewer}
+        </if>
+        <if test="description!=null and description!=''">
+            AND f.description = #{description}
+        </if>
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND date_format(f.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(f.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+        </if>
+
+    </select>
+    <insert id="insertNewForm" parameterType="SysForm">
+        insert into sys_form(
+            <if test="formId!=null and formId!=''">
+                form_id,
+            </if>
+            <if test="applicant!=null and applicant!=''">
+                applicant,
+            </if>
+            <if test="applicationType!=null and applicationType!=''">
+                application_type,
+            </if>
+            <if test="reason!=null and reason!=''">
+                reason,
+            </if>
+            <if test="status!=null and status!=''">
+                status,
+            </if>
+            <if test="delFlag!=null and delFlag!=''">
+                del_flag,
+            </if>
+            <if test="shopName!=null and shopName!=''">
+                shop_name,
+            </if>
+            <if test="phonenumber!=null and phonenumber!=''">
+                phonenumber,
+            </if>
+            <if test="reviewer!=null and reviewer!=''">
+                reviewer,
+            </if>
+            <if test="description!=null and description!=''">
+                description,
+            </if>
+            <if test="createBy!=null and createBy!=''">
+                create_by,
+            </if>
+            <if test="updateBy!=null and updateBy!=''">
+                update_by,
+            </if>
+            <if test="updateTime!=null and updateTime!=''">
+                update_time,
+            </if>
+            create_time
+        )
+        values(
+        <if test="formId!=null and formId!=''">
+            #{formId},
+        </if>
+        <if test="applicant!=null and applicant!=''">
+            #{applicant},
+        </if>
+        <if test="applicationType!=null and applicationType!=''">
+            #{applicationType},
+        </if>
+        <if test="reason!=null and reason!=''">
+            #{reason},
+        </if>
+        <if test="status!=null and status!=''">
+            #{status},
+        </if>
+        <if test="delFlag!=null and delFlag!=''">
+            #{delFlag},
+        </if>
+        <if test="shopName!=null and shopName!=''">
+            #{shopName},
+        </if>
+        <if test="phonenumber!=null and phonenumber!=''">
+            #{phonenumber},
+        </if>
+        <if test="reviewer!=null and reviewer!=''">
+            #{reviewer},
+        </if>
+        <if test="description!=null and description!=''">
+            #{description},
+        </if>
+        <if test="createBy!=null and createBy!=''">
+            #{createBy},
+        </if>
+        <if test="updateBy!=null and updateBy!=''">
+            #{updateBy},
+        </if>
+        <if test="updateTime!=null and updateTime!=''">
+            #{updateTime},
+        </if>
+        sysdate()
+        )
+    </insert>
+    <update id="updateForm" parameterType="SysForm">
+        update sys_form f
+        <set>
+            <if test="reason!=null and reason != ''">f.reason = #{reason},</if>
+            <if test="status!=null and status != ''">f.status = #{status},</if>
+            <if test="delFlag!=null and delFlag != ''">f.def_flag = #{delFlag},</if>
+            <if test="shopName!=null and shopName != ''">f.shop_name = #{shopName},</if>
+            <if test="phonenumber!=null and phonenumber != ''">f.phonenumber = #{phonenumber},</if>
+            <if test="reviewer!=null and reviewer != ''">f.reviewer = #{reviewer},</if>
+            <if test="description!=null and description != ''">f.description = #{description},</if>
+            f.update_time = sysdate()
+        </set>
+        where f.form_id = #{formId}
+    </update>
+
+
+</mapper>

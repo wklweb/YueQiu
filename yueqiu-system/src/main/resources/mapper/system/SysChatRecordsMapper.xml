@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yueqiu.system.mapper.SysChatRecordsMapper">
+    <resultMap type="SysChatRecords" id="SysChatRecordsResult">
+        <result property="activityId" column="activity_id"/>
+        <result property="sender" column="sender"/>
+        <result property="target" column="target"/>
+        <result property="msg" column="msg"/>
+        <result property="sendingTime" column="sending_time"/>
+    </resultMap>
+
+	<sql id="selectChatRecordsVO">
+		select cr.activity_id,cr.sender,cr.target,cr.msg,cr.sending_time
+		from sys_chat_records cr
+	</sql>
+
+	<insert id="insertChatRecords" parameterType="SysChatRecords">
+		insert into sys_chat_records(activity_id,sender,target,msg,sending_time)
+		values (#{activityId},#{sender},#{target},#{msg},#{sendingTime})
+	</insert>
+	<select id="selectAllRecords" parameterType="Long" resultMap="SysChatRecordsResult">
+		<include refid="selectChatRecordsVO" />
+		where cr.activity_id = #{activityId}
+	</select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yueqiu.system.mapper.SysUserRoleMapper">
+    <resultMap type="SysUserRole" id="SysUserRoleResult">
+		<result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+    </resultMap>
+
+	<sql id="selectUserRoleVO">
+		select  ur.user_id,ur.role_id
+		from sys_user_role ur
+	</sql>
+
+	<insert id="batchUserRole">
+		insert into sys_user_role(user_id,role_id)
+		values
+		        <foreach collection="list" item="item" index="index" separator=",">
+					(#{item.userId},#{item.roleId})
+				</foreach>
+
+	</insert>
+	<select id="selectUserRoleByUserId" parameterType="Long" resultMap="SysUserRoleResult">
+		<include refid="selectUserRoleVO" />
+		where ur.user_id = #{userId}
+	</select>
+</mapper>
