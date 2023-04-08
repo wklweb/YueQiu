@@ -9,12 +9,13 @@
         <result property="parentName"     column="parent_name"    />
         <result property="parentId"       column="parent_id"      />
         <result property="orderNum"       column="order_num"      />
-        <result property="url"            column="url"            />
+        <result property="path"            column="path"            />
         <result property="target"         column="target"         />
         <result property="menuType"       column="menu_type"      />
         <result property="visible"        column="visible"        />
         <result property="isRefresh"      column="is_refresh"     />
         <result property="perms"          column="perms"          />
+        <result property="status"          column="status"          />
         <result property="icon"           column="icon"           />
         <result property="createBy"       column="create_by"      />
         <result property="createTime"     column="create_time"    />
@@ -23,13 +24,67 @@
         <result property="remark"         column="remark"         />
     </resultMap>
     <sql id="selectSysMenuVo">
-        select menu_id, menu_name, parent_id, order_num, url, target, menu_type, visible, is_refresh, ifnull(perms,'') as perms, icon, create_by, create_time
+        select menu_id, menu_name, parent_id, order_num, path, component, `query`, is_frame, is_cache, menu_type, visible, status, ifnull(perms,'') as perms, icon, create_time
         from sys_menu
     </sql>
-    <select id="selectPermissionsByRoleId" resultMap="SysMenuResult" parameterType="Long">
+    <select id="selectPermissionsByRoleId" resultType="String" parameterType="Long">
         select distinct m.perms
         from sys_menu m
-                 left join sys_role_menu rm on rm.menu_id = m.menu_id
-        where m.visible = '0' and rm.role_id = #{roleId}
+                 left join sys_role_menu rm on m.menu_id = rm.menu_id
+        where m.status = '0' and rm.role_id = #{roleId}
+    </select>
+    <select id="selectMenuPermsByUserId" resultMap="SysMenuResult" parameterType="Long">
+        select distinct m.perms
+        from sys_menu m
+                 left join sys_role_menu rm on m.menu_id = rm.menu_id
+                 left join sys_user_role ur on rm.role_id = ur.role_id
+                 left join sys_role r on r.role_id = ur.role_id
+        where m.status = '0' and r.status = '0' and ur.user_id = #{userId}
+    </select>
+    <select id="selectMenuList" parameterType="SysMenu" resultMap="SysMenuResult">
+        <include refid="selectSysMenuVo" />
+        <where>
+            <if test="menuName != null and menuName != ''">
+                AND menu_name like concat('%', #{menuName}, '%')
+            </if>
+            <if test="visible != null and visible != ''">
+                AND visible = #{visible}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+    <select id="selectMenuListByUserId" resultMap="SysMenuResult" parameterType="SysMenu">
+        select distinct m.menu_id, m.parent_id, m.menu_name, m.path, m.component, m.`query`, m.visible, m.status, ifnull(m.perms,'') as perms, m.is_frame, m.is_cache, m.menu_type, m.icon, m.order_num, m.create_time
+        from sys_menu m
+        left join sys_role_menu rm on m.menu_id = rm.menu_id
+        left join sys_user_role ur on rm.role_id = ur.role_id
+        left join sys_role ro on ur.role_id = ro.role_id
+        where ur.user_id = #{params.userId}
+        <if test="menuName != null and menuName != ''">
+            AND m.menu_name like concat('%', #{menuName}, '%')
+        </if>
+        <if test="visible != null and visible != ''">
+            AND m.visible = #{visible}
+        </if>
+        <if test="status != null and status != ''">
+            AND m.status = #{status}
+        </if>
+        order by m.parent_id, m.order_num
+    </select>
+    <select id="selectMenuListByRoleId" resultType="Long">
+        select m.menu_id
+        from sys_menu m
+        left join sys_role_menu rm on m.menu_id = rm.menu_id
+        where rm.role_id = #{roleId}
+        <if test="menuCheckStrictly">
+            and m.menu_id not in (select m.parent_id from sys_menu m inner join sys_role_menu rm on m.menu_id = rm.menu_id and rm.role_id = #{roleId})
+        </if>
+        order by m.parent_id, m.order_num
+    </select>
+    <select id="selectMenuById" parameterType="Long" resultMap="SysMenuResult">
+        <include refid="selectSysMenuVo" />
+        where menu_id = #{menuId}
     </select>
 </mapper>
