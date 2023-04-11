@@ -28,45 +28,45 @@
         left join sys_user on u.username = uf.username
     </sql>
 
-    <select id="selectFormList" resultMap="SysFormResult" parameterType="SysForm">
-        select f.form_id,f.applicant,f.application_type,f.reason,f.status,<if test="shopName!=null and shopName!=''">f.shop_name,</if>f.phonenumber,f.del_flag,f.reviewer,f.description,f.create_time,f.update_by,f.update_time,f.remark
+    <select id="selectFormList" resultMap="SysFormResult">
+        select f.form_id,f.applicant,f.application_type,f.reason,f.status,f.shop_name,f.phonenumber,f.del_flag,f.reviewer,f.description,f.create_time,f.update_by,f.update_time,f.remark
         from sys_form f
         where f.del_flag = '0'
-        <if test="formId!=null and formId!=''">
-            AND f.form_id = #{formId}
+        <if test="sysForm.formId!=null and sysForm.formId!=''">
+            AND f.form_id = #{sysForm.formId}
         </if>
-        <if test="applicant!=null and applicant!=''">
-            AND f.applicant = #{applicant}
+        <if test="sysForm.applicant!=null and sysForm.applicant!=''">
+            AND f.applicant = #{sysForm.applicant}
         </if>
-        <if test="applicationType!=null and applicationType!=''">
-            AND f.application_type = #{applicationType}
+        <if test="type!=null and type!=''">
+            AND f.application_type = #{type}
         </if>
-        <if test="reason!=null and reason!=''">
-            AND f.reason = #{reason}
+        <if test="sysForm.reason!=null and sysForm.reason!=''">
+            AND f.reason = #{sysForm.reason}
         </if>
-        <if test="status!=null and status!=''">
-            AND f.status = #{status}
+        <if test="sysForm.status!=null and sysForm.status!=''">
+            AND f.status = #{sysForm.status}
         </if>
-        <if test="delFlag!=null and delFlag!=''">
-            AND f.del_flag = #{delFlag}
+        <if test="sysForm.delFlag!=null and sysForm.delFlag!=''">
+            AND f.del_flag = #{sysForm.delFlag}
         </if>
-        <if test="shopName!=null and shopName!=''">
-            AND f.shop_name = #{shopName}
+        <if test="sysForm.shopName!=null and sysForm.shopName!=''">
+            AND f.shop_name = #{sysForm.shopName}
         </if>
-        <if test="phonenumber!=null and phonenumber!=''">
-            AND f.phonenumber = #{phonenumber}
+        <if test="sysForm.phonenumber!=null and sysForm.phonenumber!=''">
+            AND f.phonenumber = #{sysForm.phonenumber}
         </if>
-        <if test="reviewer!=null and reviewer!=''">
-            AND f.reviewer = #{reviewer}
+        <if test="sysForm.reviewer!=null and sysForm.reviewer!=''">
+            AND f.reviewer = #{sysForm.reviewer}
         </if>
-        <if test="description!=null and description!=''">
-            AND f.description = #{description}
+        <if test="sysForm.description!=null and sysForm.description!=''">
+            AND f.description = #{sysForm.description}
         </if>
-        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-            AND date_format(f.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+        <if test="sysForm.params.beginTime != null and sysForm.params.beginTime != ''"><!-- 开始时间检索 -->
+            AND date_format(f.create_time,'%y%m%d') &gt;= date_format(#{sysForm.params.beginTime},'%y%m%d')
         </if>
-        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-            AND date_format(f.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+        <if test="sysForm.params.endTime != null and sysForm.params.endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(f.create_time,'%y%m%d') &lt;= date_format(#{sysForm.params.endTime},'%y%m%d')
         </if>
 
     </select>

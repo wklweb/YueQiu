@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -55,5 +56,9 @@ public class RedisCache {
 
     public boolean hasKey(String retryCountKey) {
         return redisTemplate.hasKey(retryCountKey);
+    }
+
+    public Collection<String> getKeys(String keys) {
+        return redisTemplate.keys(keys);
     }
 }

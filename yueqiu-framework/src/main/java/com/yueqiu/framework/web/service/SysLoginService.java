@@ -75,9 +75,9 @@ public class SysLoginService {
         finally {
             AuthenticationContextHolder.clearContext();
         }
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         //记录登录日志 和 更新用户
         AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username, Constants.LOGIN_SUCCESS, MessageUtils.getMessage("user.login.success")));
-        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         recordLoginInfo(loginUser.getUserId());
 
         return tokenService.createToken(loginUser);

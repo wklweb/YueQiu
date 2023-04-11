@@ -109,8 +109,8 @@ public class TokenService {
      * @param loginUser
      */
     private void refreshToken(LoginUser loginUser) {
-        loginUser.setExpireTime(System.currentTimeMillis()+expireTime*MILLIS_MINUTE);
         loginUser.setLoginTime(System.currentTimeMillis());
+        loginUser.setExpireTime(loginUser.getLoginTime()+expireTime*MILLIS_MINUTE);
         String tokenKey = getTokenKey(loginUser.getToken());
         redisCache.setCacheObject(tokenKey,loginUser,expireTime, TimeUnit.MINUTES);
     }
@@ -125,8 +125,8 @@ public class TokenService {
         Map<String,Object> map = new HashMap<>();
         map.put(Constants.LOGIN_USER_KEY,token);
         loginUser.setToken(token);
-        refreshToken(loginUser);
         setUserAgent(loginUser);
+        refreshToken(loginUser);
         return createToken(map);
     }
 

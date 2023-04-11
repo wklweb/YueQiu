@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface SysShopMapper {
     List<SysShop> selectShopList(SysShop sysShop);
+
+    SysShop selectShopById(Long shopId);
+
+    int updateShop(SysShop sysShop);
 }

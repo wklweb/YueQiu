@@ -14,6 +14,9 @@ public class SysArea extends BaseEntity {
     @Excel(name = "场地名称")
     private String name;
 
+    @Excel(name = "店铺id")
+    private Long shopId;
+
     @Excel(name = "场地类型", readConverterExp = "0=足球场,1=篮球场,2=乒乓球,3=羽毛球")
     private String areaType;
 
@@ -44,6 +47,14 @@ public class SysArea extends BaseEntity {
 
     @Excel(name = "场地库存")
     private String stock;
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
 
     public Long getAreaId() {
         return areaId;

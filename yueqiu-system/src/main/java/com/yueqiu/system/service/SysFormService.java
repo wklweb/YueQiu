@@ -7,9 +7,8 @@ import java.util.List;
 public interface SysFormService {
     int addShopApplyForm(SysForm sysForm,String applicationType);
 
-    List<SysForm> selectShopApplyList(SysForm sysForm);
+    List<SysForm> selectShopApplyList(SysForm sysForm,String applicationType);
 
-    boolean checkFormTypeUnique(SysForm sysForm);
 
     int updateForm(SysForm sysForm);
 

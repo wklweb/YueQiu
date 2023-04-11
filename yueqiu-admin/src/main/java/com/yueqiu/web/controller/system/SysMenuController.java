@@ -23,8 +23,6 @@ import java.util.List;
 public class SysMenuController extends BaseController {
     @Autowired
     private SysMenuService sysMenuService;
-
-
     @GetMapping("/MtreeList/{roleId}")
     public AjaxResult getMtreeList(@PathVariable Long roleId) {
             AjaxResult ajaxResult = AjaxResult.success();
@@ -39,6 +37,8 @@ public class SysMenuController extends BaseController {
     private AjaxResult getMenuInfo(@PathVariable Long menuId){
         return AjaxResult.success(sysMenuService.selectMenuById(menuId));
     }
+
+
 
 
 

@@ -19,4 +19,5 @@ public class UserConstants {
     public static final String EMAIL_UNIQUE = "0";
     public static final boolean NOT_UNIQUE = false;
     public static final boolean UNIQUE = true;
+    public static final String YES = "Y";
 }

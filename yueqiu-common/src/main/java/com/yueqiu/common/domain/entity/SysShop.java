@@ -38,6 +38,16 @@ public class SysShop extends BaseEntity {
 
     private List<SysArea> areas;
 
+    @Excel(name = "图片地址")
+    private String imgUrl;
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public String getCancelFlag() {
         return cancelFlag;

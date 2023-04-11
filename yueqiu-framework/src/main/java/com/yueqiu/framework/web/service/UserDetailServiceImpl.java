@@ -5,6 +5,7 @@ import com.yueqiu.common.domain.entity.SysUser;
 import com.yueqiu.common.enums.UserStatus;
 import com.yueqiu.common.exception.ServiceException;
 import com.yueqiu.common.exception.user.UserNotExistsException;
+import com.yueqiu.common.utils.IpUtils;
 import com.yueqiu.common.utils.StringUtils;
 import com.yueqiu.system.service.SysUserService;
 import org.slf4j.Logger;
@@ -45,7 +46,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     private UserDetails createLoginUser(SysUser sysUser) {
-        return new LoginUser(sysUser.getUserId(),sysUser,syspermissionService.getPermissions(sysUser));
+        LoginUser loginUser = new LoginUser(sysUser.getUserId(),sysUser,syspermissionService.getPermissions(sysUser));
+        return loginUser;
     }
 
 }
