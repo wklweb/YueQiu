@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yueqiu.system.mapper.SysAreaMapper">
+    <resultMap type="SysArea" id="SysAreaResult">
+        <id property="areaId" column="area_id"/>
+        <result property="name" column="name"/>
+        <result property="areaType" column="area_type"/>
+        <result property="shopId" column="shop_id"/>
+        <result property="isShow" column="is_show"/>
+        <result property="status" column="status"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="money" column="money"/>
+        <result property="image" column="image"/>
+        <result property="description" column="description"/>
+        <result property="areaLocation" column="area_location"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="stock" column="stock"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+    <sql id="selectAreaVO">
+        select a.area_id,a.shop_id,a.name,a.area_type,a.is_show,a.status,a.begin_time,a.end_time,a.money,a.image,a.description,a.area_location,a.del_flag,a.stock,a.create_by,a.create_time,a.update_by,a.update_time,a.shop_id
+        from sys_area a
+    </sql>
+
+    <select id="selectAreaList" resultMap="SysAreaResult">
+        <include refid="selectAreaVO" />
+        where a.del_flag = '0'
+        <if test="area.areaType !=null and area.areaType!=''">
+            AND a.area_type = #{area.areaType}
+        </if>
+        <if test="area.name !=null and area.name !=''">
+            AND a.name like concat('%',#{area.name},'%')
+        </if>
+        <if test="shopId !=null">
+            AND a.shop_id = #{shopId}
+        </if>
+        <if test="shopId ==null and area.shopId !=null">
+            AND a.shop_id = #{area.shopId}
+        </if>
+    </select>
+
+
+    <insert id="insertArea" parameterType="SysArea">
+        insert into sys_area(
+        <if test="name != null and name != ''">name,</if>
+        <if test="areaType != null and areaType != ''">area_type,</if>
+        <if test="shopId != null">shop_id,</if>
+        <if test="isShow != null and isShow != ''">is_show,</if>
+        <if test="status != null and status != ''">status,</if>
+        <if test="beginTime != null">begin_time,</if>
+        <if test="endTime != null">end_time,</if>
+        <if test="money != null">money,</if>
+        <if test="image != null and image != ''">image,</if>
+        <if test="description != null and description != ''">description,</if>
+        <if test="areaLocation != null and areaLocation != ''">area_location,</if>
+        <if test="delFlag != null and delFlag != ''">del_flag,</if>
+        <if test="stock != null">stock,</if>
+        <if test="createBy != null and createBy != ''">create_by,</if>
+        create_time
+        )
+        values (
+        <if test="name != null and name != ''">#{name},</if>
+        <if test="areaType != null and areaType != ''">#{areaType},</if>
+        <if test="shopId != null">#{shopId},</if>
+        <if test="isShow != null and isShow != ''">#{isShow},</if>
+        <if test="status != null and status != ''">#{status},</if>
+        <if test="beginTime != null">#{beginTime},</if>
+        <if test="endTime != null">#{endTime},</if>
+        <if test="money != null">#{money},</if>
+        <if test="image != null and image != ''">#{image},</if>
+        <if test="description != null and description != ''">#{description},</if>
+        <if test="areaLocation != null and areaLocation != ''">#{areaLocation},</if>
+        <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+        <if test="stock != null">#{stock},</if>
+        <if test="createBy != null and createBy != ''">#{createBy},</if>
+        sysdate()
+        )
+    </insert>
+    <select id="selectAreaListByArea" parameterType="SysArea" resultMap="SysAreaResult">
+        select a.area_id,a.name,a.shop_id,a.area_type,a.is_show,a.status,a.begin_time,a.end_time,a.money,a.image,a.description,a.area_location,a.del_flag,a.stock,a.create_by,a.create_time,a.update_by,a.update_time
+        from sys_area a
+        where a.del_flag = '0'
+        <if test="areaId!=null">
+            AND a.area_id = #{areaId}
+        </if>
+        <if test="shopId!=null">
+            AND a.shop_id = #{shopId}
+        </if>
+        <if test="name!=null and name!=''">
+            AND a.name = #{name}
+        </if>
+        <if test="areaType!=null and areaType!=''">
+            AND a.area_type = #{areaType}
+        </if>
+        <if test="createTime !=null">
+            AND a.create_time = #{createTime}
+        </if>
+
+    </select>
+</mapper>

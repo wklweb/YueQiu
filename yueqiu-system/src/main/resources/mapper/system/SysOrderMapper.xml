@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yueqiu.system.mapper.SysOrderMapper">
+    <resultMap type="SysOrder" id="SysOrderResult">
+        <id property="orderId" column="order_id"/>
+        <result property="shopId" column="shop_id"/>
+        <result property="phonenumber" column="phonenumber"/>
+        <result property="orderType" column="order_type"/>
+        <result property="afterType" column="after_type"/>
+        <result property="afterStatus" column="after_status"/>
+        <result property="status" column="status"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="money" column="money"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+        <association property="shop" column="shop_id" javaType="SysShop" resultMap="shopResult"/>
+        <collection property="childArea" javaType="java.util.List" resultMap="SysAreaResult"/>
+    </resultMap>
+
+    <resultMap id="shopResult" type="SysShop">
+        <id property="shopId" column="shop_id"/>
+        <result property="shopName" column="shop_name"/>
+        <result property="location" column="location"/>
+        <result property="status" column="status"/>
+        <result property="cancelFlag" column="cancel_flag"/>
+        <result property="imgUrl" column="img_url"/>
+        <result property="storeLabel" column="store_label"/>
+        <result property="storeRating" column="store_rating"/>
+        <result property="businessStartTime" column="business_start_time"/>
+        <result property="businessEndTime" column="business_end_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <resultMap id="SysAreaResult" type="SysArea">
+        <id property="areaId" column="area_id"/>
+        <result property="name" column="name"/>
+        <result property="areaType" column="area_type"/>
+        <result property="shopId" column="shop_id"/>
+        <result property="isShow" column="is_show"/>
+        <result property="status" column="status"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="money" column="money"/>
+        <result property="image" column="image"/>
+        <result property="description" column="description"/>
+        <result property="areaLocation" column="area_location"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="stock" column="stock"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectOrderVO">
+        select o.order_id,o.phonenumber,o.order_type,o.after_status,o.after_type,o.status,o.pay_status,o.money,o.pay_time,o.create_by,o.create_time,o.update_time,
+        a.area_id,a.name,a.begin_time,a.end_time,a.status,a.is_show,a.image,a.description,a.area_location,a.stock,
+        s.*
+        from sys_order o
+        left join sys_order_area oa on oa.order_id = o.order_id
+        left join sys_area a on a.area_id = oa.area_id
+        left join sys_shop s on s.shop_id = a.shop_id
+    </sql>
+
+    <select id="selectOrderList" parameterType="SysOrder" resultMap="SysOrderResult">
+        <include refid="selectOrderVO"/>
+        where o.order_type = '0'
+        <if test="orderId!=null">
+            AND o.order_id = #{orderId}
+        </if>
+        <if test="shopId!=null">
+            AND o.shop_id = #{shopId}
+        </if>
+        <if test="params.shopId != null">
+            AND o.shop_id = #{params.shopId}
+        </if>
+        <if test="orderType!=null and orderType!=''">
+            AND o.order_type = orderType
+        </if>
+        <if test="afterStatus!=null and afterStatus!=''">
+            AND o.after_status = #{afterStatus}
+        </if>
+        <if test="afterType!=null">
+            AND o.after_type = #{afterType}
+        </if>
+        <if test="phonenumber!=null and phonenumber">
+            AND o.phonenumber = #{phonenumber}
+        </if>
+        <if test="status!=null and status !=''">
+            AND o.status = #{status}
+        </if>
+        <if test="payStatus!=null and payStatus!=''">
+            AND o.pay_status = #{payStatus}
+        </if>
+        <if test="params.payTime !=null and params.payTime !=''">
+            AND date_format(o.pay_time,'%y%m%d')>=date_format(#{params.payTime},'%y%m%d')
+        </if>
+        <if test="params.payEndTime!=null and params.payEndTime!=''">
+            AND date_format(o.pay_time,'%y%m%d') &lt;= date_format(#{params.payEndTime},'%y%m%d')
+        </if>
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND date_format(o.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(o.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+        </if>
+
+
+    </select>
+    <select id="selectOrderByOrderId" resultMap="SysOrderResult" >
+        <include refid="selectOrderVO" />
+        where o.order_id = #{orderId}
+    </select>
+</mapper>
