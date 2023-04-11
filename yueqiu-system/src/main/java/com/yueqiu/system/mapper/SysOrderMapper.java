@@ -8,4 +8,6 @@ public interface SysOrderMapper {
     List<SysOrder> selectOrderList(SysOrder sysOrder);
 
     SysOrder selectOrderByOrderId(Long orderId);
+
+    List<SysOrder> selectDrawBackList(SysOrder sysOrder);
 }

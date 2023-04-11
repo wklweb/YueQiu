@@ -1,5 +1,6 @@
 package com.yueqiu.common.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yueqiu.common.annotation.Excel;
 import com.yueqiu.common.domain.BaseEntity;
 
@@ -16,6 +17,7 @@ public class SysOrder extends BaseEntity {
     private String status;
     private String payStatus;
     private Double money;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date payTime;
     private Long shopId;
     @Excel(name = "售后类型",readConverterExp = "0=整单退款,1=部分退款")

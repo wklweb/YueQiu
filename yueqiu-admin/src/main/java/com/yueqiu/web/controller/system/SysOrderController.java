@@ -31,7 +31,7 @@ public class SysOrderController extends BaseController {
     }
 
 
-    @PostMapping("/{orderId}")
+    @GetMapping("/{orderId}")
     @PreAuthorize("@permission.hasPerms('order:orderList:query')")
     public AjaxResult getInfo(@PathVariable Long orderId){
         return AjaxResult.success(sysOrderService.selectOrderByOrderId(orderId));

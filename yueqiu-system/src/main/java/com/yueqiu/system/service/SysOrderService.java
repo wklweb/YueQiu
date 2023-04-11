@@ -9,4 +9,6 @@ public interface SysOrderService {
     List<SysOrder> selectOrderList(SysOrder sysOrder, Long userId);
 
     SysOrder selectOrderByOrderId(@Param(value = "orderId") Long orderId);
+
+    List<SysOrder> selectDrawBackList(SysOrder sysOrder);
 }

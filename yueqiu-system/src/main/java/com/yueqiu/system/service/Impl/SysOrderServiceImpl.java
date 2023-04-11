@@ -29,4 +29,9 @@ public class SysOrderServiceImpl implements SysOrderService {
     public SysOrder selectOrderByOrderId(Long orderId) {
         return sysOrderMapper.selectOrderByOrderId(orderId);
     }
+
+    @Override
+    public List<SysOrder> selectDrawBackList(SysOrder sysOrder) {
+        return sysOrderMapper.selectDrawBackList(sysOrder);
+    }
 }

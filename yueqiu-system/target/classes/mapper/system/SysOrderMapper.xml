@@ -121,4 +121,18 @@
         <include refid="selectOrderVO" />
         where o.order_id = #{orderId}
     </select>
+
+    <select id="selectDrawBackList" parameterType="SysOrder" resultMap="SysOrderResult">
+        select o.order_id,o.phonenumber,o.order_type,o.after_status,o.after_type,o.status,o.pay_status,o.money,o.pay_time,o.create_by,o.create_time,o.update_time,
+        a.area_id,a.name,a.begin_time,a.end_time,a.status,a.is_show,a.image,a.description,a.area_location,a.stock,
+        s.*
+        from sys_order o
+        left join sys_order_area oa on oa.order_id = o.order_id
+        left join sys_area a on a.area_id = oa.area_id
+        left join sys_shop s on s.shop_id = a.shop_id
+        where o.after_status = '1'
+        <if test="afterType!=null and afterType!=''">
+           AND a.area_id in (select area_id from sys_order_area oa where oa.after_type = #{afterType})
+        </if>
+    </select>
 </mapper>

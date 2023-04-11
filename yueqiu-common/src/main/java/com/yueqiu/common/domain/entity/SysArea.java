@@ -1,5 +1,7 @@
 package com.yueqiu.common.domain.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yueqiu.common.annotation.Excel;
 import com.yueqiu.common.domain.BaseEntity;
 
@@ -26,9 +28,11 @@ public class SysArea extends BaseEntity {
     private String status;
 
     @Excel(name = "使用开始时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date beginTime;
 
     @Excel(name = "使用截止时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     @Excel(name = "收费")
