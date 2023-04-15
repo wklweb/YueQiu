@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yueqiu.system.mapper.SysTimeMapper">
+    <resultMap type="SysTime" id="SysTimeResult">
+        <id property="timeId" column="time_id"/>
+        <result property="areaId" column="area_id"/>
+        <result property="days" column="days"/>
+        <result property="money" column="money"/>
+        <result property="status" column="status"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+	<sql id="selectSysTimeVO">
+        select t.time_id,t.area_id,t.days,money,t.status,t.begin_time,t.end_time
+        from sys_time t
+    </sql>
+    <select id="selectTimeList" resultMap="SysTimeResult" parameterType="SysTime">
+        <include refid="selectSysTimeVO"/>
+        <where>
+            <if test="timeId!=null">
+               AND t.time_id = #{timeId}
+            </if>
+            <if test="areaId!=null">
+               AND t.area_id = #{areaId}
+            </if>
+            <if test="days!=null and days!=''">
+                AND t.days = #{days}
+            </if>
+            <if test="status!=null and status !=''">
+                AND t.status = #{status}
+            </if>
+            <if test="beginTime!=null">
+                AND t.begin_time = #{beginTime}
+            </if>
+            <if test="endTime!=null">
+                AND t.end_time = #{endTime}
+            </if>
+        </where>
+    </select>
+    <select id="selectTimeOnly" parameterType="SysTime" resultMap="SysTimeResult">
+        <include refid="selectSysTimeVO" />
+        where t.days = #{days} AND t.begin_time = #{beginTime} AND t.end_time = #{endTime}
+    </select>
+    <insert id="insertAreaTime" parameterType="SysTime">
+        insert into sys_time(area_id,begin_time,end_time,days,money,create_time,create_by)
+        values (#{areaId},#{beginTime},#{endTime},#{days},#{money},sysdate(),#{createBy})
+    </insert>
+    <delete id="deleteTimeById" parameterType="Long">
+        delete from sys_time
+        where time_id = #{timeId}
+    </delete>
+</mapper>
