@@ -32,4 +32,9 @@
         <include refid="selectDictDataVo" />
         where dict_type = #{dictType}
     </select>
+    <select id="selectDictDataOnly" parameterType="SysDictData" resultMap="SysDictDataResult">
+        <include refid="selectDictDataVo"/>
+        where dict_type = #{dictType} AND dict_value = #{dictValue}
+
+    </select>
 </mapper>

@@ -9,5 +9,9 @@ public @interface Resubmit {
 
     public String message() default "当前提交已重复，请勿重复提交";
 
+    /**
+     * 请求周期
+     * @return
+     */
     public int interval() default 5000;
 }

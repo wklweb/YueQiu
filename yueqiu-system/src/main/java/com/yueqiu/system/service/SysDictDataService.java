@@ -10,4 +10,6 @@ public interface SysDictDataService {
     Set<String> selectAreaValues(String dictType);
 
     List<SysDictData> selectDictDataList(String dictType);
+
+    SysDictData selectDictDataByKeyAndValue(String key, String value);
 }

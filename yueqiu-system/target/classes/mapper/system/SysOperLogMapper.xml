@@ -30,4 +30,35 @@
         insert into sys_oper_log(title, business_type, method, request_method, operator_type, oper_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, error_msg, cost_time, oper_time)
         values (#{title}, #{businessType}, #{method}, #{requestMethod}, #{operatorType}, #{operName}, #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{errorMsg}, #{costTime}, sysdate())
     </insert>
+    <select id="selectOperLogList" resultMap="SysOperResult" parameterType="SysOperLog">
+        <include refid="SysOperLogVO" />
+        <where>
+            <if test="title!=null and title!=''">
+                AND title = #{title}
+            </if>
+            <if test="businessType!=null and businessType!=''">
+                AND business_type = #{businessType}
+            </if>
+            <if test="operName !=null and operName !=''">
+                AND oper_name = #{operName}
+            </if>
+            <if test="operatorType !=null and operatorType !=''">
+                AND operator_type = #{operatorType}
+            </if>
+            <if test="status !=null">
+                ANDstatus = #{status}
+            </if>
+            <if test="params.beginTime !=null and params.beginTime !=''">
+                AND  date_format(oper_time,'%y%m%d') >= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime !=''">
+                and date_format(oper_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+            order by oper_id desc
+    </select>
+    <delete id="deleteOperLogById" parameterType="Long">
+        delete from sys_oper_log
+        where oper_id = #{operId}
+    </delete>
 </mapper>

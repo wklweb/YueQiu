@@ -44,7 +44,6 @@ public class cacheController {
         Object obj = redisTemplate.execute((RedisCallback<Object>) connection -> connection.dbSize());
         Properties commandStats = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
         Map<String,Object> map = new HashMap<>(3);
-
         List<Map<String,String>> list = new ArrayList<>();
         commandStats.stringPropertyNames().forEach(key->{
             Map<String,String> m = new HashMap<>(3);
@@ -53,16 +52,11 @@ public class cacheController {
             m.put("value",StringUtils.substringBetween(property,"calls=",",usec"));
             list.add(m);
         });
-
-
-
         map.put("info",properties);
         map.put("dbsize",obj);
         map.put("commandStats",list);
         return AjaxResult.success(map);
     }
-
-
 
 
     @PreAuthorize("@permission.hasPerms('monitor:cache:list')")

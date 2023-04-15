@@ -64,7 +64,6 @@ public class AsyncFactory {
         };
 
     }
-
     public static TimerTask recordOperLog(SysOperLog sysOperLog) {
         return new TimerTask() {
             @Override
@@ -73,4 +72,5 @@ public class AsyncFactory {
             }
         };
     }
+
 }

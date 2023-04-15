@@ -6,6 +6,7 @@ import com.yueqiu.common.domain.BaseEntity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class SysOrder extends BaseEntity {
     public static final Long serialVersionUID = 1L;
@@ -16,7 +17,7 @@ public class SysOrder extends BaseEntity {
     private String orderType;
     private String status;
     private String payStatus;
-    private Double money;
+    private Double moneys;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date payTime;
     private Long shopId;
@@ -107,12 +108,12 @@ public class SysOrder extends BaseEntity {
         this.payStatus = payStatus;
     }
 
-    public Double getMoney() {
-        return money;
+    public Double getMoneys() {
+        return moneys;
     }
 
-    public void setMoney(Double money) {
-        this.money = money;
+    public void setMoney(Double moneys) {
+        this.moneys = moneys;
     }
 
     public Date getPayTime() {

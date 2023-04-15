@@ -5,6 +5,8 @@ import com.yueqiu.system.mapper.LogininforMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ISysLogininforService implements com.yueqiu.system.service.ISysLogininforService {
 
@@ -14,5 +16,9 @@ public class ISysLogininforService implements com.yueqiu.system.service.ISysLogi
     public void insertLogininfor(SysLogininfor logininfor) {
         logininforMapper.insertLogininfor(logininfor);
 
+    }
+
+    public List<SysLogininfor> selectLogininfors(SysLogininfor sysLogininfor) {
+            return logininforMapper.selectLogininforList(sysLogininfor);
     }
 }

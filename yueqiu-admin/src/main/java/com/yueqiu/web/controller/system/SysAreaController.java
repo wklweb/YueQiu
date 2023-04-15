@@ -2,10 +2,13 @@ package com.yueqiu.web.controller.system;
 
 import com.yueqiu.common.domain.AjaxResult;
 import com.yueqiu.common.domain.entity.SysArea;
+import com.yueqiu.common.domain.entity.SysTime;
 import com.yueqiu.common.domain.entity.TableInfo;
+import com.yueqiu.common.utils.StringUtils;
 import com.yueqiu.system.service.SysAreaService;
 import com.yueqiu.system.service.SysDictDataService;
 import com.yueqiu.system.service.SysShopService;
+import com.yueqiu.system.service.SysTimeService;
 import com.yueqiu.web.controller.base.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -23,8 +27,6 @@ public class SysAreaController extends BaseController {
 
     @Autowired
     private SysAreaService sysAreaService;
-    @Autowired
-    private SysShopService sysShopService;
     @Autowired
     private SysDictDataService dictDataService;
 
@@ -50,6 +52,7 @@ public class SysAreaController extends BaseController {
             return AjaxResult.error("场地类型不存在");
         }
     }
+
 
 
 

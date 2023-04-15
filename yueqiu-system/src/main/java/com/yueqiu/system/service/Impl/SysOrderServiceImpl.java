@@ -15,14 +15,11 @@ public class SysOrderServiceImpl implements SysOrderService {
     private SysOrderMapper sysOrderMapper;
     @Override
     public List<SysOrder> selectOrderList(SysOrder sysOrder, Long userId) {
-        if(SysUser.isAdmin(userId)){
-            return sysOrderMapper.selectOrderList(sysOrder);
-        }
-        else {
+        if (!SysUser.isAdmin(userId)) {
             sysOrder.getParams().clear();
-            sysOrder.getParams().put("shopId",userId);
-            return sysOrderMapper.selectOrderList(sysOrder);
+            sysOrder.getParams().put("shopId", userId);
         }
+        return sysOrderMapper.selectOrderList(sysOrder);
     }
 
     @Override

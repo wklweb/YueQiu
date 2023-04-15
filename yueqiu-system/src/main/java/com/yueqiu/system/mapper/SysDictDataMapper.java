@@ -10,4 +10,6 @@ public interface SysDictDataMapper {
     Set<String> selectDictDateByDictType(@Param("dictType") String dictType);
 
     List<SysDictData> selectDictDateList(String dictType);
+
+    SysDictData selectDictDataOnly(SysDictData sysDictData);
 }

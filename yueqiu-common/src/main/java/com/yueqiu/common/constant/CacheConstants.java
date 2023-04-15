@@ -7,4 +7,5 @@ public class CacheConstants {
     public static final String CAPTCHA_CODE_KEY = "captcha_code_key";
     public static final String PWD_ERR_CNT_KEY = "pwd_err_count";
 
+    public static final String RESET_PASSWORD_KEY = "reset_password_key:";
 }

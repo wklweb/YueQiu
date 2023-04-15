@@ -12,7 +12,7 @@
         <result property="afterStatus" column="after_status"/>
         <result property="status" column="status"/>
         <result property="payStatus" column="pay_status"/>
-        <result property="money" column="money"/>
+        <result property="moneys" column="moneys"/>
         <result property="payTime" column="pay_time"/>
         <result property="createBy" column="create_by"/>
         <result property="createTime" column="create_time"/>
@@ -46,10 +46,6 @@
         <result property="areaType" column="area_type"/>
         <result property="shopId" column="shop_id"/>
         <result property="isShow" column="is_show"/>
-        <result property="status" column="status"/>
-        <result property="beginTime" column="begin_time"/>
-        <result property="endTime" column="end_time"/>
-        <result property="money" column="money"/>
         <result property="image" column="image"/>
         <result property="description" column="description"/>
         <result property="areaLocation" column="area_location"/>
@@ -60,21 +56,33 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
         <result property="remark" column="remark"/>
+        <collection  property="times"   javaType="java.util.List"           resultMap="TimeResult" />
+    </resultMap>
+    <resultMap id="TimeResult" type="SysTime">
+        <id     property="timeId"       column="time_id"        />
+        <result property="beginTime"     column="begin_time"      />
+        <result property="endTime"      column="end_time"       />
+        <result property="days"     column="days"      />
+        <result property="money"     column="money"      />
+        <result property="status"     column="status"    />
     </resultMap>
 
+
     <sql id="selectOrderVO">
-        select o.order_id,o.phonenumber,o.order_type,o.after_status,o.after_type,o.status,o.pay_status,o.money,o.pay_time,o.create_by,o.create_time,o.update_time,
-        a.area_id,a.name,a.begin_time,a.end_time,a.status,a.is_show,a.image,a.description,a.area_location,a.stock,
-        s.*
+        select o.order_id,o.phonenumber,o.order_type,o.after_status,o.after_type,o.status,o.pay_status,o.moneys,o.pay_time,o.create_by,o.create_time,o.update_time,
+        a.area_id,a.name,a.is_show,a.image,a.description,a.area_location,a.stock,
+        s.*,
+        t.*
         from sys_order o
         left join sys_order_area oa on oa.order_id = o.order_id
         left join sys_area a on a.area_id = oa.area_id
         left join sys_shop s on s.shop_id = a.shop_id
+        left join sys_time t on t.area_id = a.area_id
     </sql>
 
     <select id="selectOrderList" parameterType="SysOrder" resultMap="SysOrderResult">
         <include refid="selectOrderVO"/>
-        where o.order_type = '0'
+       <where>
         <if test="orderId!=null">
             AND o.order_id = #{orderId}
         </if>
@@ -114,7 +122,7 @@
         <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
             AND date_format(o.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
         </if>
-
+        </where>
 
     </select>
     <select id="selectOrderByOrderId" resultMap="SysOrderResult" >
@@ -123,16 +131,21 @@
     </select>
 
     <select id="selectDrawBackList" parameterType="SysOrder" resultMap="SysOrderResult">
-        select o.order_id,o.phonenumber,o.order_type,o.after_status,o.after_type,o.status,o.pay_status,o.money,o.pay_time,o.create_by,o.create_time,o.update_time,
-        a.area_id,a.name,a.begin_time,a.end_time,a.status,a.is_show,a.image,a.description,a.area_location,a.stock,
-        s.*
+        select  o.order_id,o.phonenumber,o.order_type,o.after_status,o.after_type,o.status,o.pay_status,o.moneys,o.pay_time,o.create_by,o.create_time,o.update_time,
+        a.area_id,a.name,a.is_show,a.image,a.description,a.area_location,a.stock,
+        s.*,
+        t.time_id,t.days,t.money,t.status,t.begin_time,t.end_time
         from sys_order o
         left join sys_order_area oa on oa.order_id = o.order_id
         left join sys_area a on a.area_id = oa.area_id
         left join sys_shop s on s.shop_id = a.shop_id
+        left join sys_time t on t.area_id = a.area_id
         where o.after_status = '1'
         <if test="afterType!=null and afterType!=''">
-           AND a.area_id in (select area_id from sys_order_area oa where oa.after_type = #{afterType})
+           AND t.time_id in (select time_id  from sys_order_area oa where oa.after_type = #{afterType})
+        </if>
+        <if test="afterType == null">
+            AND t.time_id in (select time_id from sys_order_area where after_type = '1' OR after_type = '0')
         </if>
     </select>
 </mapper>

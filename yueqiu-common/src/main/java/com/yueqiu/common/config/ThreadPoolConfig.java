@@ -49,5 +49,17 @@ public class ThreadPoolConfig {
         executor.initialize();
         return executor;
     }
+    @Bean("emailExecutor")
+    public ThreadPoolTaskExecutor emailServiceExecutor(){
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setMaxPoolSize(50);
+        executor.setCorePoolSize(10);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("email-pool-");
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.initialize();
+        return executor;
+    }
 
 }

@@ -6,6 +6,7 @@ import com.yueqiu.common.annotation.Excel;
 import com.yueqiu.common.domain.BaseEntity;
 
 import java.util.Date;
+import java.util.List;
 
 public class SysArea extends BaseEntity {
     public static final Long serialVersionUID = 1L;
@@ -24,20 +25,6 @@ public class SysArea extends BaseEntity {
 
     private String isShow;
 
-    @Excel(name = "场地状态")
-    private String status;
-
-    @Excel(name = "使用开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date beginTime;
-
-    @Excel(name = "使用截止时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date endTime;
-
-    @Excel(name = "收费")
-    private Double money;
-
     @Excel(name = "场地图片",cellType = Excel.ColumnType.IMAGE)
     private String image;
 
@@ -51,6 +38,16 @@ public class SysArea extends BaseEntity {
 
     @Excel(name = "场地库存")
     private String stock;
+
+    private List<SysTime> times;
+
+    public List<SysTime> getTimes() {
+        return times;
+    }
+
+    public void setTimes(List<SysTime> times) {
+        this.times = times;
+    }
 
     public Long getShopId() {
         return shopId;
@@ -92,37 +89,6 @@ public class SysArea extends BaseEntity {
         this.isShow = isShow;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public Double getMoney() {
-        return money;
-    }
-
-    public void setMoney(Double money) {
-        this.money = money;
-    }
 
     public String getImage() {
         return image;
@@ -171,10 +137,6 @@ public class SysArea extends BaseEntity {
                 ", name='" + name + '\'' +
                 ", areaType='" + areaType + '\'' +
                 ", isShow='" + isShow + '\'' +
-                ", status='" + status + '\'' +
-                ", beginTime=" + beginTime +
-                ", endTime=" + endTime +
-                ", money=" + money +
                 ", image='" + image + '\'' +
                 ", description='" + description + '\'' +
                 ", areaLocation='" + areaLocation + '\'' +

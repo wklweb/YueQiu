@@ -2,14 +2,25 @@ package com.yueqiu.web.controller.system;
 
 import com.yueqiu.common.annotation.Anonymous;
 import com.yueqiu.common.annotation.Log;
+import com.yueqiu.common.annotation.Resubmit;
 import com.yueqiu.common.constant.UserConstants;
+import com.yueqiu.common.core.redis.RedisCache;
 import com.yueqiu.common.domain.AjaxResult;
+import com.yueqiu.common.domain.entity.SysDictData;
 import com.yueqiu.common.domain.entity.SysUser;
 import com.yueqiu.common.domain.entity.TableInfo;
+import com.yueqiu.common.domain.model.MailInfo;
 import com.yueqiu.common.enums.BusinessType;
 import com.yueqiu.common.enums.OperatorType;
+import com.yueqiu.common.enums.UserStatus;
 import com.yueqiu.common.utils.SecurityUtils;
+import com.yueqiu.common.utils.SpringUtils;
 import com.yueqiu.common.utils.StringUtils;
+import com.yueqiu.common.utils.email.EmailUtils;
+import com.yueqiu.framework.web.service.EmailService;
+import com.yueqiu.framework.web.service.SysResetPasswordService;
+import com.yueqiu.system.service.ISysConfigService;
+import com.yueqiu.system.service.SysDictDataService;
 import com.yueqiu.system.service.SysUserRoleService;
 import com.yueqiu.system.service.SysUserService;
 import com.yueqiu.web.controller.base.BaseController;
@@ -17,9 +28,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Future;
 
 @RestController
 @RequestMapping("/system/user")
@@ -27,9 +40,11 @@ import java.util.Objects;
 public class SysUserController extends BaseController {
     @Autowired
     private SysUserService sysUserService;
-
     @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private SysDictDataService sysDictDataService;
+    @Autowired
+    private SysResetPasswordService sysResetPasswordService;
+
 
     @GetMapping("/list")
     @PreAuthorize("@permission.hasPerms('system:user:list')")
@@ -120,8 +135,73 @@ public class SysUserController extends BaseController {
         return AjaxResult.success();
     }
 
+    /**
+     * 找回密码
+     */
+    @PostMapping("/retrieve")
+    @Anonymous
+    @Resubmit(interval = 180000,message = "找回操作频繁,请三分钟后重新尝试")
+    @ApiOperation(value = "发送找回密码邮件",tags = "发送找回密码邮件")
+    public AjaxResult sendRetrieveMail(@RequestParam String email){
+        String msg = EmailUtils.checkEmail(email);
+        if(!StringUtils.isEmpty(msg)){
+            return AjaxResult.error(msg);
+        }
+        SysUser sysUser = new SysUser();
+        sysUser.setEmail(email);
+        if(UserConstants.EMAIL_UNIQUE.equals(sysUserService.checkEmail(sysUser))){
+            return AjaxResult.error("邮箱未注册");
+        }
+        SysDictData sysDictData = sysDictDataService.selectDictDataByKeyAndValue("sys_mail_type","0");
+        String title = sysDictData.getDictLabel();
+        MailInfo mailInfo = new MailInfo("约球账号操作:"+title,email);
 
+        EmailService emailService = SpringUtils.getBean("mail");
+        boolean result = false;
+        try {
+            Future<Boolean> future = emailService.sendTemplateMail(mailInfo);
+            result = future.get();
+        }
+        catch (Exception e){
+            return AjaxResult.error(e.getMessage());
+        }
+        return result?AjaxResult.success("发送成功"):AjaxResult.error("发送失败");
 
+    }
 
-
+    /**
+     * 重置密码
+     */
+    @PostMapping("/resetPwd")
+    @Anonymous
+    @ApiOperation(value = "重置密码",tags = "重置密码")
+    @Resubmit
+    public AjaxResult resetPassword(@RequestParam String newPassword,@RequestParam String resetKey,
+                                    @RequestParam String email){
+        if(StringUtils.isEmpty(newPassword)||!newPassword.matches(UserConstants.PASSWORD_REGULAR_EXPRESSION)){
+            return AjaxResult.error("密码含有数字和字母,且长度要在8-16位之间");
+        }
+        if(!StringUtils.isEmpty(resetKey)&&sysResetPasswordService.checkResetKey(resetKey)){
+            SysUser sysUser = new SysUser();
+            sysUser.setEmail(email);
+            sysUser.setPassword(SecurityUtils.encryptPassword(newPassword));
+            return toAjax(sysResetPasswordService.resetPassword(sysUser,resetKey));
+        }
+        else {
+            return AjaxResult.error("操作失败");
+        }
+    }
+    @PostMapping("/block/{userId}")
+    @ApiOperation(value = "封禁用户",tags = "封禁用户")
+    @Resubmit
+    public AjaxResult blockUser(@PathVariable Long userId){
+        if(userId!=null){
+            SysUser sysUser = new SysUser();
+            sysUser.setUserId(userId);
+            sysUser.setStatus(UserStatus.DISABLE.getCode());
+            sysUserService.updateUserInfo(sysUser);
+            return AjaxResult.success();
+        }
+        return AjaxResult.error();
+    }
 }

@@ -5,6 +5,9 @@ import com.yueqiu.common.domain.AjaxResult;
 import com.yueqiu.common.domain.entity.SysOrder;
 import com.yueqiu.common.domain.entity.SysUser;
 import com.yueqiu.common.domain.model.LoginBody;
+import com.yueqiu.common.domain.model.MailInfo;
+import com.yueqiu.common.utils.SpringUtils;
+import com.yueqiu.framework.web.service.EmailService;
 import com.yueqiu.system.mapper.SysOrderMapper;
 import com.yueqiu.system.mapper.SysUserMapper;
 import com.yueqiu.web.controller.base.BaseController;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Time;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Controller
 @Api(value = "测试接口", tags = "用户测试接口")
@@ -46,4 +51,11 @@ public class TestController extends BaseController {
 //    public AjaxResult testOrder(@RequestBody SysOrder sysOrder){
 //        return AjaxResult.success(sysOrderMapper.selectOrderList(sysOrder));
 //    }
+    @PostMapping("/sendMail")
+    @ResponseBody
+    public AjaxResult send(@RequestBody MailInfo mailInfo) throws ExecutionException, InterruptedException {
+        EmailService emailService = SpringUtils.getBean("mail");
+        Future<Boolean> result= emailService.sendTemplateMail(mailInfo);
+        return result.get()?AjaxResult.success("发送成功"):AjaxResult.error("发送失败");
+    }
 }

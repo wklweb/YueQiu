@@ -102,6 +102,7 @@ public class LogAspect {
         if (controllerLog.isKeepRequestParam()) {
             setRequestParam(joinPoint, sysOperLog, controllerLog.filterParam());
         }
+
         // 是否需要保存response，参数和值
         if (controllerLog.isKeepResponseParam() && StringUtils.isNotNull(jsonResult))
         {
@@ -121,7 +122,8 @@ public class LogAspect {
         Map<?,?> params = ServletUtils.getParamMap(ServletUtils.getRequest());
         String requestMethod = ServletUtils.getRequest().getMethod();
         if (StringUtils.isEmpty(params) &&
-                (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod))) {
+                (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)||
+                        HttpMethod.DELETE.name().equals(requestMethod))) {
             //得到过滤后的请求参数
             String requestParam = arraysToString(joinPoint.getArgs(), filterParam);
             operLog.setOperParam(StringUtils.substring(requestParam,0,2000));

@@ -24,6 +24,7 @@ public class SysMenuController extends BaseController {
     @Autowired
     private SysMenuService sysMenuService;
     @GetMapping("/MtreeList/{roleId}")
+    @ApiOperation(value = "获取菜单信息", notes = "获取菜单信息")
     public AjaxResult getMtreeList(@PathVariable Long roleId) {
             AjaxResult ajaxResult = AjaxResult.success();
             List<SysMenu> sysMenuList = sysMenuService.selectMenuList(getLoginUser().getUserId());

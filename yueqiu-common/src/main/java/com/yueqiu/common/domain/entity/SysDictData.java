@@ -148,6 +148,15 @@ public class SysDictData extends BaseEntity {
         this.status = status;
     }
 
+    public SysDictData(String dictType,String dictValue) {
+        this.dictValue = dictValue;
+        this.dictType = dictType;
+    }
+
+    public SysDictData() {
+
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)

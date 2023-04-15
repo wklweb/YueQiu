@@ -27,6 +27,7 @@ public class SysDrawbackController extends BaseController {
     @PreAuthorize("@permission.hasPerms('order:drawback:list')")
     @ApiOperation(value = "售后订单显示", tags = "售后订单显示")
     public TableInfo drawbackList(@RequestBody SysOrder sysOrder){
+        startPage();
         List<SysOrder> sysOrderList = sysOrderService.selectDrawBackList(sysOrder);
         return getTableInfo(sysOrderList);
     }

@@ -80,4 +80,5 @@ public class SysUserOnlineController extends BaseController {
         }
         return AjaxResult.success();
     }
+
 }

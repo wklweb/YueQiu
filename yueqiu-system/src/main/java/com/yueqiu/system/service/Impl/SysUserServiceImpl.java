@@ -53,7 +53,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public String checkEmail(SysUser user) {
-        SysUser sysUser = sysUserMapper.selectUserByUserName(user.getPhonenumber());
+        SysUser sysUser = sysUserMapper.selectUserByEmail(user.getEmail());
         if(!Objects.isNull(sysUser)){
             return UserConstants.EMAIL_NOT_UNIQUE;
         }

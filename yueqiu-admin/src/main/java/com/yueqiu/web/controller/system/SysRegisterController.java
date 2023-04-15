@@ -33,4 +33,6 @@ public class SysRegisterController {
         String result = sysRegisterService.register(register);
         return StringUtils.isEmpty(result)?success():error(result);
     }
+
+
 }

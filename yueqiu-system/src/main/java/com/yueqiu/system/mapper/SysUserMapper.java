@@ -10,11 +10,13 @@ public interface SysUserMapper {
     SysUser selectUserById(Long userId);
 
 
-    void updateUserInfo(SysUser user);
+    int updateUserInfo(SysUser user);
 
     SysUser selectUserByUserName(String loginName);
 
     List<SysUser> selectUserList(SysUser sysUser);
 
     int insertUser(SysUser user);
+
+    SysUser selectUserByEmail(String email);
 }

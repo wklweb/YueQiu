@@ -1,6 +1,5 @@
 package com.yueqiu.common.core.redis;
 
-import com.yueqiu.common.core.domain.model.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;

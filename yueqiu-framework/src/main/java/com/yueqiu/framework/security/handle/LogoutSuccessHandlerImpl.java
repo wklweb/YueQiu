@@ -1,7 +1,10 @@
 package com.yueqiu.framework.security.handle;
 
+import com.alibaba.fastjson.JSON;
 import com.yueqiu.common.constant.Constants;
 import com.yueqiu.common.core.domain.model.LoginUser;
+import com.yueqiu.common.domain.AjaxResult;
+import com.yueqiu.common.utils.ServletUtils;
 import com.yueqiu.common.utils.StringUtils;
 import com.yueqiu.framework.manager.AsyncFactory;
 import com.yueqiu.framework.manager.AsyncManager;
@@ -42,6 +45,10 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
             tokenService.delLogininfo(token);
             //记录用户退出日志
             AsyncManager.me().execute(AsyncFactory.recordLoginInfo(loginName, Constants.LOGOUT,"退出成功"));
+            ServletUtils.renderString(response,"退出成功");
+        }
+        else {
+            ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.error(200,"请先登录")));
         }
     }
 }

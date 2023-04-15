@@ -25,5 +25,11 @@ public class SysDictDataServiceImpl implements SysDictDataService {
         return sysDictDataMapper.selectDictDateList(dictType);
     }
 
+    @Override
+    public SysDictData selectDictDataByKeyAndValue(String key, String value) {
+        SysDictData sysDictData = new SysDictData(key,value);
+        return sysDictDataMapper.selectDictDataOnly(sysDictData);
+    }
+
 
 }

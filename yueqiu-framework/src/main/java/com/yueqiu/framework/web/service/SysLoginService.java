@@ -130,7 +130,7 @@ public class SysLoginService {
             AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username,Constants.LOGIN_FAIL,MessageUtils.getMessage("user.password.not.match")));
             throw new UserPasswordNotMatchException();
         }
-        if(password.length()> UserConstants.PASSWORD_MAX_LENGTH||username.length()<UserConstants.PASSWORD_MIN_LENGTH){
+        if(password.length() > UserConstants.PASSWORD_MAX_LENGTH||password.length()<UserConstants.PASSWORD_MIN_LENGTH){
             AsyncManager.me().execute(AsyncFactory.recordLoginInfo(username,Constants.LOGIN_FAIL,MessageUtils.getMessage("user.password.not.match")));
             throw new UserPasswordNotMatchException();
         }
